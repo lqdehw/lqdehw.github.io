@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2020-12-28 Mon 15:33 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bspwm 配置</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="/css/blog.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/code.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class="banner">
+          <a id="myname" href="/">Lqdehq</a><hr><nav>
+          <p><a href="/">Home</a>
+          <a href="/About.html">About</a></p></nav></div>
+</div>
+<div id="content">
+<h1 class="title">Bspwm 配置</h1>
+
+<div id="outline-container-org6aad3fc" class="outline-2">
+<h2 id="org6aad3fc">新建用户</h2>
+<div class="outline-text-2" id="text-org6aad3fc">
+<p>
+在安装完基础的 archlinux 后，root 账户登录执行：<br>
+<code>useadd -mG wheel -s /bin/bash hai</code><br>
+-m：创建用户 hai 的目录。<br>
+-G：hai 属于用户组 wheel。<br>
+-s：指定 shell 目录。<br>
+<code>EDITOR=nano visudo</code><br>
+取消 wheel 行的注释。<br>
+创建 hai 的密码：<br>
+<code>passwd hai</code><br>
+输入两次密码。<br>
+切换到用户 hai<br>
+<code>su hai</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-orgbf6b494" class="outline-2">
+<h2 id="orgbf6b494">dhcpcd</h2>
+<div class="outline-text-2" id="text-orgbf6b494">
+<p>
+开启：<br>
+<code>systemctl start dhcpcd</code><br>
+设置 dhcpcd 为开机启动：<br>
+<code>systemctl enable dhcpcd</code><br>
+查看 dhcpcd 状态：<br>
+<code>systemctl status dhcpcd</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-org287fcbd" class="outline-2">
+<h2 id="org287fcbd">安装 Bspwm 及其相关包</h2>
+<div class="outline-text-2" id="text-org287fcbd">
+<p>
+<code>sudo pacman -S xorg xorg-xinit xf86-video-ati bspwm sxhkd nitrogen xfce4-terminal dmenu firefox</code><br>
+xorg：图形用户必备包。<br>
+xorg-xinit：.xinitrc 的默认配置文件。<br>
+xf86-video-ati：AMD 的老显卡驱动。<br>
+bspwm：窗口管理器。<br>
+sxhkd：按键程序。<br>
+nitrogen: 壁纸程序。<br>
+xfce4-terminal：终端。<br>
+dmenu：程序启动器，不止用于程序启动。<br>
+</p>
+</div>
+</div>
+<div id="outline-container-org77e2c8d" class="outline-2">
+<h2 id="org77e2c8d">配置文件</h2>
+<div class="outline-text-2" id="text-org77e2c8d">
+<p>
+<code>mkdir .config</code><br>
+<code>mkdir .config/bspwm</code><br>
+<code>mkdir .config/sxhkd</code><br>
+<code>cp /etc/X11/xinit/xinitrc .xinitrc</code><br>
+<code>nano .xinitrc</code><br>
+删除末尾 5 行，改为：<br>
+</p>
+<div class="org-src-container">
+<pre class="src src-shell">nitrogen --restore &amp;
+exec bspwm
+</pre>
+</div>
+<p>
+<code>cp /usr/share/doc/bspwm/example/bspwmrc .config/bspwm/</code><br>
+<code>cp /usr/share/doc/bspwm/example/sxhkdrc .config/sxhkd/</code><br>
+<code>nano .config/sxhkd/sxhkdrc</code><br>
+将默认 terminal 改为：xfce4-terminal<br>
+输入 startx 即可启动。<br>
+</p>
+</div>
+</div>
+<div id="outline-container-org6e5abaf" class="outline-2">
+<h2 id="org6e5abaf">添加 archlinuxcn</h2>
+<div class="outline-text-2" id="text-org6e5abaf">
+<p>
+<code>nano /etc/pacman.conf</code><br>
+在末尾添加：<br>
+</p>
+<pre class="example">
+[archlinuxcn]
+Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch
+</pre>
+<p>
+添加后执行：<br>
+<code>sudo pacman -Syy &amp;&amp; pacman -S archlinuxcn-keyring</code><br>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>
