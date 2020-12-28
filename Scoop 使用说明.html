@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2020-12-25 Fri 12:40 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scoop 使用说明</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="/css/blog.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/code.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class="banner">
+          <a id="myname" href="/">Lqdehq</a><hr><nav>
+          <p><a href="/">Home</a>
+          <a href="/About.html">About</a></p></nav></div>
+</div>
+<div id="content">
+<h1 class="title">Scoop 使用说明</h1>
+<div id="outline-container-orgc50ce27" class="outline-2">
+<h2 id="orgc50ce27">Scoop</h2>
+<div class="outline-text-2" id="text-orgc50ce27">
+<p>
+A command-line installer for Windows，即 Windows 命令行安装程序，或叫 Windows 的包管理器。便于安装各类官方软件，而不用去官网页面下载。<br>
+</p>
+</div>
+</div>
+<div id="outline-container-org110e940" class="outline-2">
+<h2 id="org110e940">安装</h2>
+<div class="outline-text-2" id="text-org110e940">
+<p>
+作者说明文档 <a href="https://github.com/lukesampson/scoop">Scoop</a>，详细视频教程 <a href="https://www.youtube.com/watch?v=Zh0sTbT1Spw">Scoop Installation Custom Directory</a>。<br>
+</p>
+</div>
+<div id="outline-container-org7745a08" class="outline-3">
+<h3 id="org7745a08">环境要求</h3>
+<div class="outline-text-3" id="text-org7745a08">
+<ul class="org-ul">
+<li>Windows 7 SP1+ / Windows Server 2008+。<br></li>
+<li>PowerShell 5 and .NET Framework 4.5，若不是安装的时候 Windows 会自动提示下载。<br></li>
+<li>目录不要存在中文。<br></li>
+<li>本文配置是在当前用户下使用 Scoop。<br></li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org1f88176" class="outline-3">
+<h3 id="org1f88176">安装过程</h3>
+<div class="outline-text-3" id="text-org1f88176">
+<ol class="org-ol">
+<li>建立目录安装 D:\scoop，默认安装目录是 C:\users\&lt;user&gt;\scoop。<br></li>
+<li>打开 PowerShell （非管理员）。<br></li>
+<li>设置当前用户的执行策略为 RemoteSigned（可远程签署），即可执行远程脚本。<br>
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser<br></li>
+<li>确定更改策略。 Y<br></li>
+<li>设置安装目录。$env:SCOOP\='D:\scoop'<br></li>
+<li>设置用户变量、环境变量，查看用户变量中要存在 D:\SCOOP，环境变量中要存在 D:\scoop\shims。<br>
+[Environment]::SetEnvironmentVariable('SCOOP', $env:SCOOP, 'User')<br></li>
+<li>执行安装脚本。<br>
+iwr -useb get.scoop.sh | iex<br></li>
+</ol>
+<p>
+安装成功会显示：Scoop was installed successfully!<br>
+</p>
+</div>
+</div>
+<div id="outline-container-org5b7b606" class="outline-3">
+<h3 id="org5b7b606">使用</h3>
+<div class="outline-text-3" id="text-org5b7b606">
+<ol class="org-ol">
+<li>scoop help 查看帮助。<br></li>
+<li>scoop bucket list 查看 bucket 清单，默认只有一个 main。<br></li>
+<li>scoop install 7zip 安装 7zip，这个是在 main 中有的软件，安装在 D:\scoop\apps 目录下。<br></li>
+<li>scoop bucket know 查看可用 bucket。<br></li>
+<li>scoop bucket add extras 添加 extras bucket，过程会比较慢，耐心等待。<br></li>
+<li>scoop bucket add dorado <a href="https://github.com/chawyehsu/dorado">dorado</a> 国内的许多软件，QQ、TIM和微信等。<br></li>
+<li>scoop install dorado/&lt;appname&gt; 使用第三方 bucket 安装软件。<br></li>
+<li><a href="https://scoop.netlify.app/">Scoop Buckets 查询网站</a>。<br></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-org531a745" class="outline-2">
+<h2 id="org531a745">参考</h2>
+<div class="outline-text-2" id="text-org531a745">
+<p>
+<a href="https://github.com/lukesampson/scoop">Scoop</a><br>
+<a href="https://p3terx.com/archives/scoop-the-best-windows-package-manager.html">Scoop - 最好用的 Windows 包管理器</a><br>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

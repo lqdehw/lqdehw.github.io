@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2020-12-25 Fri 12:40 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>键道6</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="/css/blog.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/code.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class="banner">
+          <a id="myname" href="/">Lqdehq</a><hr><nav>
+          <p><a href="/">Home</a>
+          <a href="/About.html">About</a></p></nav></div>
+</div>
+<div id="content">
+<h1 class="title">键道6</h1>
+<div id="outline-container-org145babe" class="outline-2">
+<h2 id="org145babe">键道6</h2>
+<div class="outline-text-2" id="text-org145babe">
+<p>
+<a href="https://xkinput.gitee.io/">键道6</a> 是吅吅大牛制作的输入法。特点是“双拼顶功”，数字选重的几率很小，声母和韵母分布在除 viuoa 的 21 个键位上。viuoa 分别对应横（提）、竖（左竖勾）、撇、点（捺）、折（右竖勾）。它以打词为主，当然打单也挺好，习惯使用整句输入的人转到 键道6 要学会合理的判断字词。我在使用 键道6 之前过一段时间的微软双拼，节奏感很强，但由于无法打简拼，且回改很麻烦，最终放弃。 选择它的原因：<br>
+</p>
+<ul class="org-ul">
+<li>几乎不用选重，打词很厉害。<br></li>
+<li>顶功，直接输入后面的词组，前面的词组可以自动上屏，可大大降低空格的敲击次数。<br></li>
+<li>简码，630（105 个声母+笔形 21×5，525 个声母+笔形+笔形 21×5×5）是它的主要特色，可根据自己的需求更换。<br></li>
+<li>每周爱好者会提交词组议表，<a href="https://github.com/lyserenity">肥肥</a> 定期更新词库。<br></li>
+</ul>
+<p>
+具体教程参看 <a href="https://gitee.com/thxnder/xxjd/wikis/%E9%94%AE%E9%81%93%E6%96%B9%E6%A1%88%E7%AE%80%E6%98%8E%E6%95%99%E7%A8%8B?sort_id=2068187">小小文档</a>，这较新。<br>
+</p>
+</div>
+</div>
+<div id="outline-container-orgc68872b" class="outline-2">
+<h2 id="orgc68872b">键道6的安装与配置</h2>
+<div class="outline-text-2" id="text-orgc68872b">
+</div>
+<div id="outline-container-orgcb34126" class="outline-3">
+<h3 id="orgcb34126">Windows安装</h3>
+<div class="outline-text-3" id="text-orgcb34126">
+<p>
+<a href="https://wwa.lanzous.com/b0dhdlkj">Windows 小狼毫键道6</a><br>
+B 站上有详细的 <a href="https://www.bilibili.com/video/av53185153">安装教程</a><br>
+</p>
+</div>
+<div id="outline-container-org2977e61" class="outline-4">
+<h4 id="org2977e61">配置</h4>
+<div class="outline-text-4" id="text-org2977e61">
+<ul class="org-ul">
+<li>自定义词库<br></li>
+</ul>
+<p>
+打开用户文件夹中 xkjd6.user.dict.yaml，即可添加自己的常用词组。注意：中间一定要使用 Tab 间隔开，这里的 Tab 键是四个空格，重新部署小狼毫即可。但若更新词库后自定义词库会丢失，记得备份到用户数据文件夹，我的是C:\Program Files (x86)\Rime_JD_Tools\Rime_JD\Tools\SystemTools\WindowsTools\用户数据。这里出现下划线_，需在文件顶部添加 #+OPTIONS: ^:nil，否则下划线后面的内容都会变成脚标。也可在配置文件中添加 (setq org-use-sub-superscripts nil) 来进行全局设置。<br>
+</p>
+<ul class="org-ul">
+<li>关闭左右 Shift 切换英文<br></li>
+</ul>
+<p>
+因 Shift 键在许多软件中都定义了快捷键，容易误触，所以在 WIN10 中我只使用中文一种语言，通过 「Ctrl+空格」关闭当前中文输入法来实现输入英文。在 WIN10 设置中搜索「高级键盘设置」，点击「语言栏选项」即可对 「Ctrl+空格」进行设置。在小狼毫的用户文件夹中 default.custom.yaml，留意代码的缩进，添加：<br>
+</p>
+<pre class="example">
+"ascii_composer/switch_key":
+Shift_L: noop   # 关闭左shift切换英文
+Shift_R: noop   # 关闭右shift切换英文
+</pre>
+<p>
+重新部署 RIME 即可。<br>
+</p>
+<ul class="org-ul">
+<li>将 Caps-Lock 修改为「左Ctrl」的功能，在桌面新建 Lock.reg，在其中添加：<br></li>
+</ul>
+<pre class="example">
+Windows Registry Editor Version 5.00
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Keyboard Layout]
+"Scancode Map"=hex:00,00,00,00,00,00,00,00,02,00,00,00,1d,00,3a,00,00,00,00,00
+</pre>
+<p>
+以管理员的方式运行后重启即可生效。<br>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orge4a6af6" class="outline-3">
+<h3 id="orge4a6af6">Manjaro安装</h3>
+<div class="outline-text-3" id="text-orge4a6af6">
+<p>
+基于fcitx-rime,依次执行以下代码<br>
+</p>
+<div class="org-src-container">
+<pre class="src src-python">sudo pacman -Rsc fcitx ; 彻底删除 fcitx 包，和依赖 fcitx 包的其它所有包
+sudo pacmsn -Rsc ibus ; 彻底删除 ibus 包，和依赖 ibus 包的其它所有包
+;; -Rsc 须要谨慎使用，可能一次性删除大量的包，我这里是想完全重新安装才这样操作
+;; 删除在 ~/.config 目录下有关 fcitx 和 ibus 的相关配文件的文件夹，资源管理器中 ctrl+h 可以显示隐藏的文件夹，终端 ls -a
+;; 重启或注销
+
+sudo pacmsn -S fcitx-rime ; 安装 fcitx-rime
+sudo pacmsn -S fcitx-configtool ; 安装后，在配置 fcitx 时会有图形界面
+
+git clone https://github.com/xkinput/Rime_JD.git
+cd ~/Rime_JD/Tools/SystemTools/LinuxTools
+
+;;执行，过程中会出现 error,不用管
+./2update.sh
+;; 最后点击输入法的图标右键-配置-添加中州韵，重启或注销，若未成功再执行一次 ./2update.sh后 重启或注销
+
+;; 添加 ~/.xprofile 环境变量
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS="@im=fcitx"
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org40d2cc0" class="outline-3">
+<h3 id="org40d2cc0">键道6键位图</h3>
+<div class="outline-text-3" id="text-org40d2cc0">
+
+<div class="figure">
+<p><img src="img/2020001.png" alt="2020001.png"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

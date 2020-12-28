@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2020-12-25 Fri 12:40 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beancount 学习笔记</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="/css/blog.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/code.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class="banner">
+          <a id="myname" href="/">Lqdehq</a><hr><nav>
+          <p><a href="/">Home</a>
+          <a href="/About.html">About</a></p></nav></div>
+</div>
+<div id="content">
+<h1 class="title">Beancount 学习笔记</h1>
+
+<div id="outline-container-org7b32497" class="outline-2">
+<h2 id="org7b32497">会计恒等式</h2>
+<div class="outline-text-2" id="text-org7b32497">
+<p>
+资产 = 负债 + 权益（净资产）。负债也是资产的一部分，我有净资产 20 万，我向银行贷了 80 万，那我的资产就是 100 万。但一个人的富有程度是看净资产，而不是资产。<br>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org67b57a3" class="outline-2">
+<h2 id="org67b57a3">Beancount</h2>
+<div class="outline-text-2" id="text-org67b57a3">
+<p>
+Beancount 定义了 5 个账户类别，Assets（资产）、Equity（权益、净资产）、Liabilities（负债）、Expenses（支出）和 Income（收入），一个账户资金的减少（Credit/贷记/-），必定对应的另一个账户资金的增加（debit/借记/+），即“有借必有贷，借贷必相等”。Beancount 定义了<br>
+Assets + Equity + Liabilities + Expenses + Income = 0，从账户拿钱出来记“-”，放钱到账户记“+”。（左借右贷，左进右出；上借下贷，上进下出）<br>
+</p>
+<ul class="org-ul">
+<li><p>
+发了 1000 元工资，计做：<br>
+</p>
+<pre class="example">
+Income:Salary:              -1000 元
+Assets:工行卡:               1000 元
+</pre></li>
+
+<li><p>
+我向银行贷了 500 万<br>
+</p>
+<pre class="example">
+Liabilities:工商银行:      -500 万元
+Assets:工行卡:              500 万元
+</pre></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orge3db359" class="outline-2">
+<h2 id="orge3db359">安装 Beancount</h2>
+<div class="outline-text-2" id="text-orge3db359">
+</div>
+<div id="outline-container-orgc70d69b" class="outline-3">
+<h3 id="orgc70d69b">Manjaro 下安装</h3>
+<div class="outline-text-3" id="text-orgc70d69b">
+<pre class="example">
+pip install beancount fava -i  https://pypi.tuna.tsinghua.edu.cn/simple
+</pre>
+<p>
+在终端运行 fava xxx.bean 在浏览器打开 localhots:5000 即可查看相应数据。<br>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org10eae45" class="outline-3">
+<h3 id="org10eae45">Emacs 下添加 beancount-mode 便于记录账目</h3>
+<div class="outline-text-3" id="text-org10eae45">
+<p>
+下载 <a href="https://github.com/beancount/beancount-mode/blob/main/beancount.el">beancount.el</a>，在 .eamcs 下添加：<br>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(require 'beancount)
+(add-to-list 'auto-mode-alist '("\\.bean\\'" . beancount-mode))
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org60e5499" class="outline-2">
+<h2 id="org60e5499">记账实例</h2>
+<div class="outline-text-2" id="text-org60e5499">
+<pre class="example">
+;;; 开设账户
+;; 添加支付宝、银行卡账户
+2020-01-01 open Assets:Bank CNY
+2020-01-01 open Assets:Alipay CNY
+;; 添加信用卡账户
+2020-01-01 open Liabilities:Debit CNY
+;; 添加支出账户
+2020-01-01 open Expenses:Clothing
+2020-01-01 open Expenses:Food
+;; 添加收入账户
+2020-01-01 open Income:Salary
+2020-01-01 open Income:Rebate ;分红，回扣
+;; Equity 初始化平衡账户
+2020-01-01 open Equity:Opening-Balances CNY
+
+;;; 初始化账户平衡，等式平衡
+2020-01-01 * "Bank"
+  Assets:Bank                         1000.00 CNY
+  Equity:Opening-Balances            -1000.00 CNY
+2020-01-01 * "Alipay"
+  Assets:Alipay                       2000.00 CNY
+  Equity:Opening-Balances            -2000.00 CNY
+2020-01-01 * "我的贷款"
+  Liabilities:Debit                   -500.00 CNY
+  Equity:Opening-Balances              500.00 CNY
+                                        
+;;; 1 月记账，也可建立2020-01.bean，在主文件下添加：include "2020-01.bean" 
+2020-01-01 * "吃饭"
+  Expenses:Food                         50.00 CNY
+  Assets:Alipay                        -50.00 CNY
+2020-01-05 * "买衣服"
+  Expenses:Clothing                    200.00 CNY
+  Liabilities:Discover                -200.00 CNY
+2020-01-09 * "还信用卡"
+  Liabilities:Dibet                    400.00 CNY
+  Assets:Alipay                       -400.00 CNY
+2020-01-10 * "工资"
+  Assets:Bank                         5000.00 CNY
+  Income:Salary                      -5000.00 CNY
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org76bbc4b" class="outline-2">
+<h2 id="org76bbc4b">推荐阅读</h2>
+<div class="outline-text-2" id="text-org76bbc4b">
+<p>
+<a href="https://byvoid.com/zht/blog/beancount-bookkeeping-1/">Beancount複式記賬（一）：爲什麼</a><br>
+<a href="https://byvoid.com/zht/blog/beancount-bookkeeping-2/">Beancount複式記賬（二）：借貸記賬法</a><br>
+<a href="https://byvoid.com/zht/blog/beancount-bookkeeping-3/">Beancount複式記賬（三）：結餘與資產</a><br>
+<a href="https://byvoid.com/zht/blog/beancount-bookkeeping-4/">Beancount複式記賬（四）：項目管理</a><br>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>

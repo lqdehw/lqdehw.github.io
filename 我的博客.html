@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2020-12-25 Fri 12:40 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>我的博客</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="/css/blog.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/code.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class="banner">
+          <a id="myname" href="/">Lqdehq</a><hr><nav>
+          <p><a href="/">Home</a>
+          <a href="/About.html">About</a></p></nav></div>
+</div>
+<div id="content">
+<h1 class="title">我的博客</h1>
+<div id="outline-container-org19187b2" class="outline-2">
+<h2 id="org19187b2">起初</h2>
+<div class="outline-text-2" id="text-org19187b2">
+<p>
+我是 2020 年 4 月才断断续续写博客，记录一些零散小事。起初使用 Hugo 生成博客，后来接触了 Emacs，了解到 Org-mode，很喜欢那种能把注意力只集中在内容记录的过程。不用去苦苦纠结标题、对齐等等排版上的问题，感到十分的愉悦。<br>
+</p>
+</div>
+</div>
+<div id="outline-container-org2d12010" class="outline-2">
+<h2 id="org2d12010">准备</h2>
+<div class="outline-text-2" id="text-org2d12010">
+</div>
+<div id="outline-container-org0e2b4f4" class="outline-3">
+<h3 id="org0e2b4f4">建立博客目录</h3>
+<div class="outline-text-3" id="text-org0e2b4f4">
+<div class="org-src-container">
+<pre class="src src-shell">D:/org
+   ├─ gtd                   # 日常生活/工作记录
+   ├─ notes                 # 笔记目录
+   │  ├─ css                # 样式
+   │  ├─ img                # 图片
+   │  └─ ***.org            # 笔记文件
+   └─ public_html           # 将笔记导出 HTML5
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org9298480" class="outline-3">
+<h3 id="org9298480">配置代码</h3>
+<div class="outline-text-3" id="text-org9298480">
+<p>
+在 custom-set-variables.el 中添加：<br>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(require 'ox-publish)
+(setq org-publish-project-alist
+      '(("blog-notes"
+	 :base-directory "D:/org/notes"
+	 :base-extension "org"
+	 :publishing-directory "D:/org/public_html"
+	 :recursive t
+	 :publishing-function org-html-publish-to-html
+	 :headline-levels 4
+	 :section-numbers nil
+	 :with-toc nil
+	 :with-latex t
+	 :html-doctype "html5"
+	 :auto-sitemap t
+	 :sitemap-filename "index.org"
+	 :sitemap-title "目录"
+	 :preserve-breaks t
+	 :html-head-include-default-style nil
+	 :html-head-include-scripts nil
+	 :html-head-extra
+	    "&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/css/main.css\"/&gt;
+	     &lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/css/code.css\"/&gt;
+	     &lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/css/blog.css\"/&gt;"
+	 :html-preamble
+	    "&lt;div class=\"banner\"&gt;
+	      &lt;a id=\"myname\" href=\"/\"&gt;Lqdehq&lt;/a&gt;
+	      &lt;hr&gt;
+	      &lt;nav&gt;
+		&lt;p&gt;
+		  &lt;a href=\"/\"&gt;Home&lt;/a&gt;
+		  &lt;a href=\"/About.html\"&gt;About&lt;/a&gt;
+		&lt;/p&gt;
+	      &lt;/nav&gt;
+	    &lt;/div&gt;"
+	 :html-postamble nil)
+	("blog-static"
+	 :base-directory "D:/org/notes"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	 :publishing-directory "D:/org/public_html/"
+	 :recursive t
+	 :publishing-function org-publish-attachment)
+	("blog" :components ("blog-notes" "blog-static"))
+	))
+</pre>
+</div>
+<ul class="org-ul">
+<li>ox-publish：加载 Org-mode 的发布框架。<br></li>
+<li>blog-notes：将 org 文件导出为 HTML 的属性，在这里面设置，名称可自定义。<br></li>
+<li>:base-directory：从 D:/org/notes 读取需导出的文件。<br></li>
+<li>:base-extension：需导出文件的格式为 org。<br></li>
+<li>:publishing-directory：导出到 D:/org/public_html。<br></li>
+<li>:recursive：是否递归读取 notes 文件夹，t：是 nil：否。<br></li>
+<li>:publishing-function：发布方式，将 org 转换成 HTML。<br></li>
+<li>:headline-levels：可区别 4 层标题。<br></li>
+<li>:section-numbers：是否为标题添加序号，1、起初，2、准备。<br></li>
+<li>:with-toc：是否为每篇博客创建 table of contents。<br></li>
+<li>:with-latex：是否可以使用 Latex。<br></li>
+<li>:html-doctype：导出的 HTML 的类型为 HTML5。<br></li>
+<li>:auto-sitemap：是否自动生成网站地图，就是所有博客的目录。<br></li>
+<li>:sitemap-filename：生成的地图的名称为 index.org，名称可自定义。<br></li>
+<li>:sitemap-title：地图显示的名称为 目录。<br></li>
+<li>:preserve-breaks：是否识别回车符，若填 nil 会导致有些文段连在一起。<br></li>
+<li>:html-head-include-default-style：清除默认 CSS。<br></li>
+<li>:html-head-include-scripts：清除默认 Javascript。<br></li>
+<li>:html-head-extra：加载多个 CSS，留意 “” 需要用 \ 来转义。<br></li>
+<li>:html-preamble：为每篇博客添加头部固定显示内容。<br></li>
+<li>:html-postamble：为每篇博客添加尾部固定显示内容。<br></li>
+<li>blog-static：静态内容直接导出到目标文件夹，名称可自定义。<br></li>
+<li>blog：将 blog-notes blog-static 两部分功能组合，名称可自定义。<br></li>
+</ul>
+<p>
+在添加完代码后记得 M-x eval-buffer 评估缓冲区，为了使当前代码生效。接着 M-x org-publish-project 选择 blog 就可以生成所需文件，以后可根据需求选择导出 blog blog-notes blog-static 部分的内容。</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

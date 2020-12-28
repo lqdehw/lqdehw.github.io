@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2020-12-25 Fri 12:40 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emacs 安装与配置</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="/css/blog.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/code.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class="banner">
+          <a id="myname" href="/">Lqdehq</a><hr><nav>
+          <p><a href="/">Home</a>
+          <a href="/About.html">About</a></p></nav></div>
+</div>
+<div id="content">
+<h1 class="title">Emacs 安装与配置</h1>
+<div id="outline-container-org7b95bfe" class="outline-2">
+<h2 id="org7b95bfe">Emacs？</h2>
+<div class="outline-text-2" id="text-org7b95bfe">
+<p>
+官网翻译过来就是，一个可扩展的、可定制的、免费/自由的文本编辑器——等等。它的强大超乎你的想象。<br>
+</p>
+</div>
+</div>
+<div id="outline-container-orge22bfc0" class="outline-2">
+<h2 id="orge22bfc0">安装与配置 Emacs</h2>
+<div class="outline-text-2" id="text-orge22bfc0">
+</div>
+<div id="outline-container-orgd04522f" class="outline-3">
+<h3 id="orgd04522f">安装</h3>
+<div class="outline-text-3" id="text-orgd04522f">
+<ol class="org-ol">
+<li>下载 <a href="https://www.gnu.org/software/emacs/">Emacs</a>，它可以多平台使用，本文记录 Windows10 下安装，点击官网主页面 Windows 下载图标，点击 nearby GNU mirror（自动选择就近服务器下载地址），选择最新版本，no-deps 是没有依赖包的版本。<br></li>
+<li>解压 Emacs 到 D:/emacs，进入 D:/emacs/bin，右键 runemacs.exe 添加快捷方式到桌面，运行即可使用。<br></li>
+</ol>
+</div>
+</div>
+<div id="outline-container-org73eeab1" class="outline-3">
+<h3 id="org73eeab1">配置</h3>
+<div class="outline-text-3" id="text-org73eeab1">
+<p>
+本文使用 <a href="https://github.com/redguardtoo/emacs.d">redguardtoo</a> 的配置，推荐阅读 <a href="https://github.com/redguardtoo/mastering-emacs-in-one-year-guide/blob/master/guide-zh.org#%E4%B8%BA%E4%BB%80%E4%B9%88%E7%94%A8-emacs-%E5%8F%AF%E9%80%89">一年成为Emacs高手</a>。<br>
+</p>
+</div>
+<div id="outline-container-org52acd3b" class="outline-4">
+<h4 id="org52acd3b">Install in normal way</h4>
+<div class="outline-text-4" id="text-org52acd3b">
+<p>
+Git 国内速度较慢，建议全局科学上网进行配置且已安装 Git。Emacs 默认家目录为 C:\User\Username\Appdata\Roaming，Win+R 输入 %appdata% 可快速进入此目录（下文提到的 ~ 均为此目录）运行：<br>
+<code>git clone https://github.com/redguardtoo/emacs.d.git .emacs.d</code><br>
+clone 完成后，运行 Emacs，提示是否选择中国的最快镜像源，选择 y，耐心等待。当出现 Happy…… 则配置成功。<br>
+</p>
+</div>
+</div>
+<div id="outline-container-orga823e38" class="outline-4">
+<h4 id="orga823e38">Install stable version(OPTIONAL)</h4>
+<div class="outline-text-4" id="text-orga823e38">
+<ol class="org-ol">
+<li>下载两个文件 <a href="https://codeload.github.com/redguardtoo/emacs.d/zip/stable">emacs.d-stable.zip</a> 和 <a href="https://codeload.github.com/redguardtoo/emacs.d/zip/stable">myelpa-stable.zip</a>。<br></li>
+<li>将 emacs.d-stable 解压到 ~/.emacs.d。<br></li>
+<li>将 myelpa-stable 解压到 ~/projs/myelpa，确保解压的文件里有 archive-contents 文件。<br></li>
+<li>编辑 ~/.emacs.d/lisp/init-elpa.el，找到 ~/myelpa/ 的所在行，取消注释（删除前面的两个英文分号），将所有的符号 ~ 替换为 C:\User\Username\Appdata\Roaming，共三处。<br></li>
+<li>运行 Emacs，同上一种安装方法。<br></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orgbfa34e7" class="outline-3">
+<h3 id="orgbfa34e7">个人配置</h3>
+<div class="outline-text-3" id="text-orgbfa34e7">
+<ul class="org-ul">
+<li>打开 ~/.emacs.d/init.el，找到 Evil 的所在行，注释此行，Evil 的功能是在 Emacs 下使用 Vim 的快捷键。<br></li>
+<li>将编码环境设置为 UTF-8，习惯统一使用 UTF-8 编码。<br></li>
+<li>禁用出错时系统提示声。<br></li>
+<li>隐藏标题多余 *，只显示一个，更易排版。<br></li>
+<li>使用 <a href="https://wwe.lanzous.com/iV6F4h46d0f">文泉驿等宽微米黑</a> 在 Windows 中，中英文显示较均衡。<br></li>
+</ul>
+<p>
+在 custom-set-variables.el 中添加：<br>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"> ;; 将编码环境设置为 UTF-8 格式
+(set-language-environment "UTF-8")
+ ;; 禁用提示音
+(setq visible-bell 0)
+ ;; 隐藏多余*
+(setq org-startup-indented t)
+ ;; 设置字体，在该文件最顶部添加，避免添加自定义主题后设置失效
+(when (member "文泉驿等宽微米黑" (font-family-list))
+    (set-frame-font "文泉驿等宽微米黑-14" t t)) 
+</pre>
+</div>
+<ul class="org-ul">
+<li>设置主题<br></li>
+</ul>
+<p>
+M-x load-theme 或 M-x Customize-themes，习惯用默认主题。</p>
+</div>
+</div>
+</div>
+</div>
+</body>
+</html>

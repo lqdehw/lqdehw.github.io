@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2020-12-25 Fri 12:40 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emacs 添加新配置或插件</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="/css/blog.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/code.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class="banner">
+          <a id="myname" href="/">Lqdehq</a><hr><nav>
+          <p><a href="/">Home</a>
+          <a href="/About.html">About</a></p></nav></div>
+</div>
+<div id="content">
+<h1 class="title">Emacs 添加新配置或插件</h1>
+<div id="outline-container-org1c734e1" class="outline-2">
+<h2 id="org1c734e1">在哪里添加自定义配置？</h2>
+<div class="outline-text-2" id="text-org1c734e1">
+<p>
+在网上看到心仪的配置，如果直接复制/粘贴在 .emacs 或 init.el 或 custom-set-variables.el，可能某段代码会出错，造成 Emacs 启动异常，但自己又不清楚错在哪里。通过新建一个目录，将配置存放在此目录下，让 Emacs 启动时加载这个目录里的代码模块，从而添加新功能。如果出错直接删除这个模块即可，不影响原来的配置。<br>
+</p>
+</div>
+</div>
+<div id="outline-container-org4714ee2" class="outline-2">
+<h2 id="org4714ee2">过程</h2>
+<div class="outline-text-2" id="text-org4714ee2">
+<p>
+将下面代码添加到 .emacs （或init.el，或在 Emacs 启动时会加载的文件）<br>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp">(defun add-subdirs-to-load-path (dir)
+  "Recursive add directories to 'load-path'."
+  (let ((default-directory (file-name-as-directory dir)))
+    (add-to-list 'load-path dir)
+   (normal-top-level-add-subdirs-to-load-path)))
+(add-subdirs-to-load-path "~/.emacs-config")
+</pre>
+</div>
+<p>
+在 ~ 目录下建立一个 .emacs-config 目录，有新插件就在 ~ /.emacs-config 目录下建立子目录或子文件，配置文件放入其中，如若出错，删除即可。例如，新建 init-generic.el，在其中添加：<br>
+ <code>;; 添加在文件最末</code><br>
+<code>(provide 'init-generic)</code><br>
+表示这个文件会提供一个名叫「init-generic」的模块。<br>
+在 ~ /.emacs 里添加：<br>
+<code>(require 'init-generic)</code><br>
+表示在 Emacs 启动时会找到 init-generic.el 文件并加载「init-generic」模块。<br>
+</p>
+</div>
+<div id="outline-container-orgfcd6015" class="outline-3">
+<h3 id="orgfcd6015">init-generic.el 配置</h3>
+<div class="outline-text-3" id="text-orgfcd6015">
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"> ;; 字体设置
+(when (member "文泉驿等宽微米黑" (font-family-list))
+  (set-frame-font "文泉驿等宽微米黑-14" t t))
+ ;; 隐藏多余*
+(setq org-startup-indented t)
+ ;; 将编码环境设置为 UTF-8 格式，会造成中文显示的字体很丑，建议使用文泉驿等宽微米黑，或思源宋体
+ (set-language-environment "utf-8")
+ ;; 用 y n 来替代 yes no 的完整回答
+(fset 'yes-or-no-p 'y-or-n-p)
+ ;; 取消鼠标闪烁
+(blink-cursor-mode -1)
+ ;; 关闭 Emacs 出错时提示音
+(setq ring-bell-function 'ignore)
+ ;; 粘贴内容到文本光标处，而非鼠标指针处，防止笔记本触摸板误触
+(setq mouse-yank-at-point t)
+ ;; 强制上下分屏，对比代码不同
+(setq split-width-threshold nil)
+ ;; 提供 init-generic 模块，通常是加在最末
+(provide 'init-generic)
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org73aa8a1" class="outline-3">
+<h3 id="org73aa8a1">init-mypublis.el 配置</h3>
+<div class="outline-text-3" id="text-org73aa8a1">
+<p>
+同理，生成博客 HTML 的代码也可这样添加到子文件中，建立 init-mypublish 添加：<br>
+</p>
+<div class="org-src-container">
+<pre class="src src-emacs-lisp"> ;; 导出成网站配置
+(require 'ox-publish)
+(setq org-publish-project-alist
+      '(("blog-notes"
+	 :base-directory "D:/org/notes"
+	 :base-extension "org"
+	 :publishing-directory "D:/org/public_html"
+	 :recursive t
+	 :publishing-function org-html-publish-to-html
+	 :headline-levels 4
+	 :section-numbers nil
+	 :with-toc nil
+	 :with-latex t
+	 :html-doctype "html5"
+	 :auto-sitemap t
+	 :sitemap-filename "index.org"
+	 :sitemap-title "目录"
+	 :preserve-breaks t
+	 :html-head-include-default-style nil
+	 :html-head-include-scripts nil
+	 :html-head-extra
+	    "&lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/css/main.css\"/&gt;
+	     &lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/css/code.css\"/&gt;
+	     &lt;link rel=\"stylesheet\" type=\"text/css\" href=\"/css/blog.css\"/&gt;"
+	 :html-preamble
+	    "&lt;div class=\"banner\"&gt;
+	      &lt;a id=\"myname\" href=\"/\"&gt;Lqdehq&lt;/a&gt;
+	      &lt;hr&gt;
+	      &lt;nav&gt;
+		&lt;p&gt;
+		  &lt;a href=\"/\"&gt;Home&lt;/a&gt;
+		  &lt;a href=\"/About.html\"&gt;About&lt;/a&gt;
+		&lt;/p&gt;
+	      &lt;/nav&gt;
+	    &lt;/div&gt;"
+	 :html-postamble nil)
+       ("blog-static"
+	 :base-directory "D:/org/notes"
+	 :base-extension "css\\|js\\|png\\|jpg\\|gif\\|pdf\\|mp3\\|ogg\\|swf"
+	 :publishing-directory "D:/org/public_html/"
+	 :recursive t
+	 :publishing-function org-publish-attachment)
+	("blog" :components ("blog-notes" "blog-static"))
+	))
+(provide 'init-mypublish)
+</pre>
+</div>
+<p>
+属性说明见 <a href="我的博客.html">我的博客</a><br>
+在 .emacs 中添加：<br>
+<code>(require 'init-mypublish)</code><br>
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org0499bdc" class="outline-2">
+<h2 id="org0499bdc">参考资料</h2>
+<div class="outline-text-2" id="text-org0499bdc">
+<p>
+<a href="https://manateelazycat.github.io/emacs/2016/03/06/emacs-start.html">Emacs 折腾之旅起航</a><br>
+<a href="https://manateelazycat.github.io/emacs/2016/03/08/emacs-basic-config.html">Emacs 最基本的一些配置说明</a><br>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>
