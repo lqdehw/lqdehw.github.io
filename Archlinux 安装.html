@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- 2020-12-28 Mon 14:50 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Archlinux 安装</title>
+<meta name="generator" content="Org mode">
+<link rel="stylesheet" type="text/css" href="/css/blog.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/code.css"/>
+          <link rel="stylesheet" type="text/css" href="/css/main.css"/>
+</head>
+<body>
+<div id="preamble" class="status">
+<div class="banner">
+          <a id="myname" href="/">Lqdehq</a><hr><nav>
+          <p><a href="/">Home</a>
+          <a href="/About.html">About</a></p></nav></div>
+</div>
+<div id="content">
+<h1 class="title">Archlinux 安装</h1>
+
+<div id="outline-container-orgea2632e" class="outline-2">
+<h2 id="orgea2632e">校正时间</h2>
+<div class="outline-text-2" id="text-orgea2632e">
+<p>
+<code>timedatectl set-ntp true</code><br>
+<code>timedatectl status</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-orgf10a836" class="outline-2">
+<h2 id="orgf10a836">分区</h2>
+<div class="outline-text-2" id="text-orgf10a836">
+<p>
+<code>cfdisk sda</code> <br>
+EFI: 300M<br>
+/: 30G<br>
+/home:剩下全部<br>
+</p>
+</div>
+</div>
+<div id="outline-container-org876966a" class="outline-2">
+<h2 id="org876966a">格式化</h2>
+<div class="outline-text-2" id="text-org876966a">
+<p>
+<code>mkfs.fat -F32 /dev/sda1</code><br>
+<code>mkfs.ext4 /dev/sda2</code><br>
+<code>mkfs.ext4 /dev/sda3</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-org5769b9d" class="outline-2">
+<h2 id="org5769b9d">挂载</h2>
+<div class="outline-text-2" id="text-org5769b9d">
+<p>
+<code>mkdir /mnt/boot/EFI</code><br>
+<code>mkdir /mnt/home</code><br>
+<code>mount /dev/sda1 /mnt/boot/EFI</code><br>
+<code>mount /dev/sda2 /mnt/</code><br>
+<code>mount /dev/sda3 /mnt/home</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-orgac1eb4f" class="outline-2">
+<h2 id="orgac1eb4f">更换镜像源</h2>
+<div class="outline-text-2" id="text-orgac1eb4f">
+<p>
+<code>/etc/pacman.d/mirrorlist</code><br>
+文件开始添加：<br>
+<code>Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch</code><br>
+<code>pacman -Syy</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-org604b585" class="outline-2">
+<h2 id="org604b585">安装系统到 /mnt</h2>
+<div class="outline-text-2" id="text-org604b585">
+<p>
+arch 默认不带 sudo dhcpcd nano 需添加。<br>
+<code>pacstrap /mnt base linux linuxfirmware sudo dhcpcd nano</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-org3179b22" class="outline-2">
+<h2 id="org3179b22">安装 genfstab</h2>
+<div class="outline-text-2" id="text-org3179b22">
+<p>
+<code>genfstab -U /mnt &gt;&gt; /mnt/etc/fstab</code><br>
+查看 fstab 是否安装成功，需要有三个分区的信息。<br>
+<code>cat /mnt/etc/fstab</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-org84b9897" class="outline-2">
+<h2 id="org84b9897">切换到安装到 /mnt 的系统</h2>
+<div class="outline-text-2" id="text-org84b9897">
+<p>
+<code>arch-chroot /mnt</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-org3830335" class="outline-2">
+<h2 id="org3830335">更改时区</h2>
+<div class="outline-text-2" id="text-org3830335">
+<p>
+<code>ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-org8c378f8" class="outline-2">
+<h2 id="org8c378f8">更改硬件时间</h2>
+<div class="outline-text-2" id="text-org8c378f8">
+<p>
+<code>hwclock --systohc</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-org5724bf3" class="outline-2">
+<h2 id="org5724bf3">设置语言</h2>
+<div class="outline-text-2" id="text-org5724bf3">
+<p>
+编辑 <code>/etc/locale.gen</code><br>
+取消注释 <code># en_US.UTF-8</code> 后执行：<br>
+<code>locale-gen</code><br>
+<code>echo 'LANG=en_US.UTF-8' &gt; /etc/locale.conf</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-org9b8bfc1" class="outline-2">
+<h2 id="org9b8bfc1">设置密码</h2>
+<div class="outline-text-2" id="text-org9b8bfc1">
+<p>
+<code>pwsswd</code><br>
+输入两次密码<br>
+</p>
+</div>
+</div>
+<div id="outline-container-org7949be4" class="outline-2">
+<h2 id="org7949be4">网络配置</h2>
+<div class="outline-text-2" id="text-org7949be4">
+<p>
+编辑 <code>/etc/hostname</code> ，加上 <code>hai</code><br>
+编辑 <code>/etc/hosts</code><br>
+</p>
+<pre class="example">
+127.0.0.1	localhost
+::1		localhost
+127.0.1.1	hai.localdomain	hai
+</pre>
+</div>
+</div>
+<div id="outline-container-org2bd201a" class="outline-2">
+<h2 id="org2bd201a">安装引导</h2>
+<div class="outline-text-2" id="text-org2bd201a">
+<p>
+<code>pacman -S grub efibootmgr amd-ucode</code><br>
+<code>grub-install --target=x86_64-efi --efi-directory=/boot/EFI --bootloader-id=GRUB</code><br>
+若出现错误通常为 fstab 错误。出现 no-error 继续执行：<br>
+<code>grub-mkconfig -o /boot/grub/grub.cfg</code><br>
+</p>
+</div>
+</div>
+<div id="outline-container-orgc54e0ad" class="outline-2">
+<h2 id="orgc54e0ad">重启</h2>
+<div class="outline-text-2" id="text-orgc54e0ad">
+<p>
+<code>exit</code><br>
+<code>umount -R /mnt</code><br>
+<code>reboot</code><br>
+</p>
+</div>
+</div>
+</div>
+</body>
+</html>
